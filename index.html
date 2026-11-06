@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeStreets HYD - Civic Hazard Watch</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🚨 SafeStreets HYD</h1>
+    <p>Report civic hazards in Hyderabad. Help keep our streets safe.</p>
+    <div class="stats">
+      <span><b id="totalCount">0</b> Reports</span>
+      <span><b id="fixedCount">0</b> Fixed</span>
+      <span><b id="pendingCount">0</b> Pending</span>
+    </div>
+  </header>
+
+  <nav>
+    <button class="active" onclick="showTab('mapTab')">🗺️ Live Map</button>
+    <button onclick="showTab('reportTab')">📸 Report Hazard</button>
+    <button onclick="showTab('listTab')">📋 All Reports</button>
+  </nav>
+
+  <main>
+    <!-- MAP TAB -->
+    <section id="mapTab" class="tab active">
+      <div class="filters">
+        <select id="filterType" onchange="renderAll()">
+          <option value="all">All Hazards</option>
+          <option value="Pothole">Pothole</option>
+          <option value="Waterlogging">Waterlogging</option>
+          <option value="Open Manhole">Open Manhole</option>
+          <option value="Broken Streetlight">Broken Streetlight</option>
+          <option value="Fallen Tree / Wire">Fallen Tree / Wire</option>
+          <option value="Blocked Drain">Blocked Drain</option>
+        </select>
+        <button onclick="locateMe()">📍 My Location</button>
+      </div>
+      <div id="map"></div>
+      <p class="hint">Click on map to see hazards. Click Report to add a new one.</p>
+    </section>
+
+    <!-- REPORT TAB -->
+    <section id="reportTab" class="tab">
+      <form id="reportForm" onsubmit="submitReport(event)">
+        <label>Hazard Type *</label>
+        <select id="hazardType" required>
+          <option value="Pothole">Pothole</option>
+          <option value="Waterlogging">Waterlogging</option>
+          <option value="Open Manhole">Open Manhole</option>
+          <option value="Broken Streetlight">Broken Streetlight</option>
+          <option value="Fallen Tree / Wire">Fallen Tree / Wire</option>
+          <option value="Blocked Drain">Blocked Drain</option>
+          <option value="Damaged Footpath">Damaged Footpath</option>
+        </select>
+
+        <label>Severity *</label>
+        <select id="severity" required>
+          <option value="Low">Low - Minor inconvenience</option>
+          <option value="Medium">Medium - Risky</option>
+          <option value="High">High - Dangerous, urgent</option>
+        </select>
+
+        <label>Location / Area *</label>
+        <input type="text" id="locationName" placeholder="e.g. Banjara Hills, Road No. 12" required>
+
+        <label>Description</label>
+        <textarea id="description" rows="3" placeholder="e.g. Big pothole near bus stop, bikes are skidding"></textarea>
+
+        <label>Your Name (optional)</label>
+        <input type="text" id="reporterName" placeholder="Anonymous if blank">
+
+        <label>Photo (optional)</label>
+        <input type="file" id="photoInput" accept="image/*">
+
+        <button type="button" onclick="useMyLocation()">Use My Current Location 📍</button>
+        <p id="locStatus">Location not set. Click button above or click on map.</p>
+        <input type="hidden" id="latInput">
+        <input type="hidden" id="lngInput">
+
+        <button type="submit" class="submitBtn">Submit Report →</button>
+      </form>
+    </section>
+
+    <!-- LIST TAB -->
+    <section id="listTab" class="tab">
+      <div id="reportList"></div>
+    </section>
+  </main>
+
+  <footer>Made for Hyderabad • Data is stored in your browser for demo • Connect to Supabase/Firebase for live use</footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
